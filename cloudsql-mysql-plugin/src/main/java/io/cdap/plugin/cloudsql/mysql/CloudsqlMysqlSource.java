@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Cask Data, Inc.
+ * Copyright © 2020 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -17,12 +17,9 @@
 package io.cdap.plugin.cloudsql.mysql;
 
 import io.cdap.cdap.api.annotation.Description;
-import io.cdap.cdap.api.annotation.Macro;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.plugin.db.batch.source.AbstractDBSource;
-
-import javax.annotation.Nullable;
 
 /** Batch source to read from CloudSQL MySQL. */
 @Plugin(type = "batchsource")
@@ -51,21 +48,6 @@ public class CloudsqlMysqlSource extends AbstractDBSource {
 
   /** CloudSQL MySQL source config. */
   public static class CloudsqlMysqlSourceConfig extends AbstractDBSource.DBSourceConfig {
-
-    //    @Name(CloudsqlMysqlConstants.PROJECT)
-    //    @Description("Google Cloud Project ID, which uniquely identifies a project. "
-    //            + "It can be found on the Dashboard in the Google Cloud Platform Console.")
-    //    @Macro
-    //    public String project;
-
-    @Name(CloudsqlMysqlConstants.SERVICE_ACCOUNT_FILE_PATH)
-    @Description(
-        "Path on the local file system of the service account key used "
-            + "for authorization. Can be set to 'auto-detect' when running on a Dataproc cluster. "
-            + "When running on other clusters, the file must be present on every node in the cluster.")
-    @Macro
-    @Nullable
-    protected String serviceFilePath;
 
     @Name(CloudsqlMysqlConstants.INSTANCE_NAME)
     @Description("The CloudSQL instance to connect to.")
