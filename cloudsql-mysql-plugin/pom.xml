@@ -40,6 +40,11 @@
     </dependency>
     <dependency>
       <groupId>io.cdap.plugin</groupId>
+      <artifactId>mysql-plugin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cdap.plugin</groupId>
       <artifactId>hydrator-common</artifactId>
     </dependency>
     <dependency>

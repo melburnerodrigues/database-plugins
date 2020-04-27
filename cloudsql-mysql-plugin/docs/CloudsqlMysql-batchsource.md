@@ -89,17 +89,16 @@ Data Types Mapping
 Example
 ------
 Suppose you want to read data from CloudSQL MySQL database named "prod", as "root" user with "root" password (Get the 
-CloudSQL Socket Factory for JDBC drivers from [here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory). Run \
-```mvn -P jar-with-driver-and-dependencies clean package -DskipTests``` \
-to build a JAR containing the JDBC driver along with the socket factory dependencies and add the driver. You can also provide driver name 
-for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
+latest version of the CloudSQL socket factory jar with driver and dependencies 
+[here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/releases) and add the driver for MySQL. 
+You can also provide driver name for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
 
 
 ```
 Reference Name: "src1"
 Driver Name: "cloudsql-mysql"
 Database: "prod"
-Instance Name: "<PROJECT_ID>:<REGION>:<INSTANCE_NAME>"
+Instance Name: [PROJECT_ID]:[REGION]:[INSTANCE_NAME]
 Import Query: "select id, name, email, phone from users;"
 Number of Splits to Generate: 1
 Username: "root"

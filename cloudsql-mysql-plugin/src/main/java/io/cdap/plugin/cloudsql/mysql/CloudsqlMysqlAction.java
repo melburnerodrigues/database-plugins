@@ -21,8 +21,8 @@ import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.cdap.etl.api.action.Action;
-import io.cdap.plugin.db.batch.action.AbstractDBAction;
 import io.cdap.plugin.db.batch.action.QueryConfig;
+import io.cdap.plugin.mysql.MysqlAction;
 
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -31,31 +31,34 @@ import javax.annotation.Nullable;
 @Plugin(type = Action.PLUGIN_TYPE)
 @Name(CloudsqlMysqlConstants.PLUGIN_NAME)
 @Description("Action that runs a MySQL command on a CloudSQL instance database")
-public class CloudsqlMysqlAction extends AbstractDBAction {
+public class CloudsqlMysqlAction extends MysqlAction {
 
-  private final CloudsqlMysqlActionConfig config;
+  private final CloudsqlMysqlActionConfig cloudsqlMysqlActionConfig;
 
-  public CloudsqlMysqlAction(CloudsqlMysqlActionConfig config) {
-    super(config, false);
-    this.config = config;
+  public CloudsqlMysqlAction(
+      CloudsqlMysqlActionConfig cloudsqlMysqlActionConfig, MysqlActionConfig mysqlActionConfig) {
+    super(mysqlActionConfig);
+    this.cloudsqlMysqlActionConfig = cloudsqlMysqlActionConfig;
   }
 
   /** Mysql Action Config. */
   public static class CloudsqlMysqlActionConfig extends QueryConfig {
 
     @Name(CloudsqlMysqlConstants.INSTANCE_NAME)
-    @Description("The CloudSQL instance to connect to.")
+    @Description(
+        "The CloudSQL instance to connect to, in the format <PROJECT_ID>:<REGION>:<INSTANCE_NAME>."
+            + " Can be found in the instance overview page.")
     public String instanceName;
 
     @Name(DATABASE)
     @Description("Database name to connect to")
     public String database;
-  
+
     @Name(CloudsqlMysqlConstants.CONNECTION_TIMEOUT)
     @Description(
-            "The timeout value used for socket connect operations. If connecting to the server takes longer"
-                    + " than this value, the connection is broken. "
-                    + "The timeout is specified in seconds and a value of zero means that it is disabled")
+        "The timeout value used for socket connect operations. If connecting to the server takes longer"
+            + " than this value, the connection is broken. "
+            + "The timeout is specified in seconds and a value of zero means that it is disabled")
     @Nullable
     public Integer connectionTimeout;
 
@@ -68,11 +71,11 @@ public class CloudsqlMysqlAction extends AbstractDBAction {
           user,
           password);
     }
-  
+
     @Override
     public Map<String, String> getDBSpecificArguments() {
       return ImmutableMap.of(
-              CloudsqlMysqlConstants.CONNECTION_TIMEOUT, String.valueOf(connectionTimeout));
+          CloudsqlMysqlConstants.CONNECTION_TIMEOUT, String.valueOf(connectionTimeout));
     }
   }
 }

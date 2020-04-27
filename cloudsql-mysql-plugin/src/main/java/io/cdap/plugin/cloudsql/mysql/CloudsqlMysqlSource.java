@@ -20,6 +20,7 @@ import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.plugin.db.batch.source.AbstractDBSource;
+import io.cdap.plugin.mysql.MysqlSource;
 
 /** Batch source to read from CloudSQL MySQL. */
 @Plugin(type = "batchsource")
@@ -27,30 +28,33 @@ import io.cdap.plugin.db.batch.source.AbstractDBSource;
 @Description(
     "Reads from a CloudSQL database table using a configurable SQL query."
         + " Outputs one record for each row returned by the query.")
-public class CloudsqlMysqlSource extends AbstractDBSource {
+public class CloudsqlMysqlSource extends MysqlSource {
 
-  private final CloudsqlMysqlSourceConfig config;
+  private final CloudsqlMysqlSourceConfig cloudsqlMysqlSourceConfig;
 
-  public CloudsqlMysqlSource(CloudsqlMysqlSourceConfig config) {
-    super(config);
-    this.config = config;
+  public CloudsqlMysqlSource(
+      CloudsqlMysqlSourceConfig cloudsqlMysqlSourceConfig, MysqlSourceConfig mysqlSourceConfig) {
+    super(mysqlSourceConfig);
+    this.cloudsqlMysqlSourceConfig = cloudsqlMysqlSourceConfig;
   }
 
   @Override
   protected String createConnectionString() {
     return String.format(
         CloudsqlMysqlConstants.CLOUDSQL_MYSQL_CONNECTION_STRING_FORMAT,
-        config.database,
-        config.instanceName,
-        config.user,
-        config.password);
+        cloudsqlMysqlSourceConfig.database,
+        cloudsqlMysqlSourceConfig.instanceName,
+        cloudsqlMysqlSourceConfig.user,
+        cloudsqlMysqlSourceConfig.password);
   }
 
   /** CloudSQL MySQL source config. */
   public static class CloudsqlMysqlSourceConfig extends AbstractDBSource.DBSourceConfig {
 
     @Name(CloudsqlMysqlConstants.INSTANCE_NAME)
-    @Description("The CloudSQL instance to connect to.")
+    @Description(
+        "The CloudSQL instance to connect to, in the format <PROJECT_ID>:<REGION>:<INSTANCE_NAME>."
+            + " Can be found in the instance overview page.")
     public String instanceName;
 
     @Name(DATABASE)

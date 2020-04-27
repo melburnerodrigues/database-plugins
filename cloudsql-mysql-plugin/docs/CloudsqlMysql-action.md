@@ -36,16 +36,15 @@ will be passed to the JDBC driver as connection arguments for JDBC drivers that 
 
 Example
 -------
-Suppose you want to execute a query against a CloudSQL MySQL database named "prod", as "root" user with "root" password (Get the 
-CloudSQL Socket Factory for JDBC drivers from [here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory). Run \
-```mvn -P jar-with-driver-and-dependencies clean package -DskipTests``` \
-to build a JAR containing the JDBC driver along with the socket factory dependencies and add the driver. You can also provide driver name 
-for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
+Suppose you want to execute a query against a CloudSQL MySQL database named "prod", as "root" user with "root" password 
+(Get the latest version of the CloudSQL socket factory jar with driver and dependencies 
+[here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/releases) and add the driver for MySQL. 
+You can also provide driver name for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
 
 ```
 Driver Name: "cloudsql-mysql"
 Database Command: "UPDATE table_name SET price = 20 WHERE ID = 6"
-Instance Name: <PROJECT_ID>:<REGION_ID>:<INSTANCE_NAME>
+Instance Name: [PROJECT_ID]:[REGION]:[INSTANCE_NAME]
 Database: "prod"
 Username: "root"
 Password: "root"

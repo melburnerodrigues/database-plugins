@@ -22,6 +22,7 @@ import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.cdap.etl.api.batch.BatchSink;
 import io.cdap.plugin.db.batch.sink.AbstractDBSink;
+import io.cdap.plugin.mysql.MysqlSink;
 
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -31,13 +32,14 @@ import javax.annotation.Nullable;
 @Name(CloudsqlMysqlConstants.PLUGIN_NAME)
 @Description(
     "Writes records to a CloudSQL MySQL table. Each record will be written in a row in the table.")
-public class CloudsqlMysqlSink extends AbstractDBSink {
+public class CloudsqlMysqlSink extends MysqlSink {
 
-  private final CloudsqlMysqlSinkConfig config;
+  private final CloudsqlMysqlSinkConfig cloudsqlMysqlSinkConfig;
 
-  public CloudsqlMysqlSink(CloudsqlMysqlSinkConfig config) {
-    super(config);
-    this.config = config;
+  public CloudsqlMysqlSink(
+      CloudsqlMysqlSinkConfig cloudsqlMysqlSinkConfig, MysqlSinkConfig mysqlSinkConfig) {
+    super(mysqlSinkConfig);
+    this.cloudsqlMysqlSinkConfig = cloudsqlMysqlSinkConfig;
   }
 
   /** CloudSQL MySQL sink configuration. */
@@ -45,8 +47,8 @@ public class CloudsqlMysqlSink extends AbstractDBSink {
 
     @Name(CloudsqlMysqlConstants.INSTANCE_NAME)
     @Description(
-        "The CloudSQL instance to connect to in the format <PROJECT_ID>:<REGION>:<INSTANCE_NAME>."
-            + "Can be found in the instance overview page.")
+        "The CloudSQL instance to connect to, in the format <PROJECT_ID>:<REGION>:<INSTANCE_NAME>."
+            + " Can be found in the instance overview page.")
     public String instanceName;
 
     @Name(DATABASE)
@@ -60,7 +62,7 @@ public class CloudsqlMysqlSink extends AbstractDBSink {
             + "The timeout is specified in seconds and a value of zero means that it is disabled")
     @Nullable
     public Integer connectionTimeout;
-    
+
     @Name(TRANSACTION_ISOLATION_LEVEL)
     @Description("Transaction isolation level for queries run by this sink.")
     @Nullable
@@ -75,7 +77,7 @@ public class CloudsqlMysqlSink extends AbstractDBSink {
           user,
           password);
     }
-    
+
     @Override
     public String getTransactionIsolationLevel() {
       return transactionIsolationLevel;

@@ -32,6 +32,8 @@ Can be found in the instance overview page.
 
 **Password:** Password to use to connect to the specified database.
 
+**Transaction Isolation Level:** Transaction isolation level for queries run by this sink. 
+
 **Connection Timeout:** The timeout value (in seconds) used for socket connect operations. If connecting to the server 
 takes longer than this value, the connection is broken. A value of 0 means that it is disabled.
 
@@ -77,16 +79,15 @@ Data Types Mapping
 
 Example
 -------
-Suppose you want to write output records to "users" table of CloudSQL MySQL database named "prod", as "root" user with "root" password (Get the 
-CloudSQL Socket Factory for JDBC drivers from [here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory). Run \
-```mvn -P jar-with-driver-and-dependencies clean package -DskipTests``` \
-to build a JAR containing the JDBC driver along with the socket factory dependencies and add the driver. You can also provide driver name 
-for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
+Suppose you want to write output records to "users" table of CloudSQL MySQL database named "prod", as "root" user with 
+"root" password (Get the latest version of the CloudSQL socket factory jar with driver and dependencies 
+[here](https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/releases) and add the driver for MySQL. 
+You can also provide driver name for some specific driver, otherwise "cloudsql-mysql" will be used), then configure plugin with: 
 
 ```
 Reference Name: "sink1"
 Driver Name: "cloudsql-mysql"
-Instance Name: <PROJECT_ID>:<REGION_ID>:<INSTANCE_NAME>
+Instance Name: [PROJECT_ID]:[REGION_ID]:[INSTANCE_NAME]
 Database: "prod"
 Table Name: "users"
 Username: "root"
